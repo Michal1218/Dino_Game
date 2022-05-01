@@ -6,7 +6,7 @@ import android.graphics.Rect;
 
 public class Cactus {
 
-    public static int speed = 25;
+    private int speed = 15;
 
     private float x, y, height, width;
     private Bitmap bitmap;
@@ -44,8 +44,8 @@ public class Cactus {
     }
 
     public void render(Canvas canvas) {
-        if (x + this.width < -350) {
-            this.setX(1900);
+        if (x + this.width < 0) {
+            this.setX(Screen.width);
         }
         this.x = this.x - speed;
         canvas.drawBitmap(this.bitmap, this.x, this.y, null);
@@ -60,4 +60,27 @@ public class Cactus {
         );
     }
 
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
 }

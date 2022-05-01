@@ -1,7 +1,10 @@
 package com.example.dino_game;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+
+import java.util.ArrayList;
 
 public class Dino {
 
@@ -9,34 +12,18 @@ public class Dino {
     private float y;
     private float height;
     private float gravity, velocity;
-    private int score;
+    private int score, i;
 
     public static boolean collide = false;
+    public boolean isJumping;
+    public ArrayList<Bitmap> dinos = new ArrayList<>();
 
-    public int getScore() {
-        return score;
+    public ArrayList<Bitmap> getDinos() {
+        return dinos;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public static boolean isJumping = false;
-
-    public float getHeight() {
-        return height;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
+    public void setDinos(ArrayList<Bitmap> dinos) {
+        this.dinos = dinos;
     }
 
     private float width;
@@ -44,7 +31,7 @@ public class Dino {
 
     public Dino(float x, float y, Bitmap bitmap) {
         this.gravity = 0;
-        this.velocity = 0.6f;
+        this.velocity = 0f;
         this.x = x;
         this.y = y;
         this.bitmap = bitmap;
@@ -53,22 +40,37 @@ public class Dino {
     }
 
     public void jump() {
-        if (this.y < 450) {
-            isJumping = true;
-        } else {
+        if (this.y + this.height > Screen.height - 135) {
+            this.velocity = 0f;
+            this.gravity = 0f;
+            y = Screen.height - this.height - 135;
             isJumping = false;
         }
-        if (this.y <= -300) {
-            gravity = 2;
-        } else if (this.y >= 500) {
-            gravity = -2;
+        if (isJumping) {
+            this.velocity = 0.7f;
         }
         if (collide) {
-            score = 0;
-            MainActivity.scoreText.setText(String.valueOf("SCORE: " + score));
+            this.score = 0;
         }
         this.gravity = this.gravity + velocity;
-        y = y + this.gravity;
+        y = y + this.gravity + velocity;
+    }
+
+    public Bitmap animation() {
+        i++;
+        if (i >= 0 && i <= 5) {
+            return dinos.get(0);
+        }
+        if (i < 14) {
+            return dinos.get(2);
+        }
+        if (this.i > 24) {
+            if (this.i == 34) {
+                this.i = 0;
+            }
+            return dinos.get(1);
+        }
+        return dinos.get(0);
     }
 
     public float getGravity() {
@@ -113,7 +115,7 @@ public class Dino {
 
     public void render(Canvas canvas) {
         jump();
-        canvas.drawBitmap(this.bitmap, this.x, this.y, null);
+        canvas.drawBitmap(animation(), this.x, this.y, null);
     }
 
     public Rect getRect() {
@@ -124,5 +126,30 @@ public class Dino {
                 (int) this.y + (int) this.height
         );
     }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
 
 }
